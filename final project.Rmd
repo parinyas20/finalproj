@@ -1,30 +1,32 @@
 ---
-  title: "Final R Project"
+title: "Final R Project"
 author: "Parinyas Singh"
 date: "3/3/2020"
 output:
   word_document: 
   pdf_document: 
   html_document: 
-  df_print: paged
+    df_print: paged
 always_allow_html: true
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
 ```
 
 ## Introduction
 
 The World Health Organization defines ageism as “the stereotyping, prejudice, and discrimination against people based on their age.” Employers across various industries tend to show a negative attitude towards older workers, seeing them as less healthy, less skillful, and less productive than their younger counterparts. The problem of ageism has significantly affected the Tech industry, as the young and gifted developers and programmers, which led the way during the tech boom in the 1990s, now find themselves on the wrong side of age and falling prey to the problem of ageism. Although no significant research or studies conducted on the ageism problem in the tech industry and how it affects the salaries of the affected professionals. An analysis of data on this problem can shed some light on the factors that might affect it and provide some outlook on how different factors such as age, gender, sexual orientation, and several other factors affect the salaries of an IT professional.
 
-## About the data
+# About the data
 
-This dataset comes from a survey conducted by the popular website “Stack Overflow,” containing a wide range of data containing information about developers from various countries, their salaries, gender, education, the technology they work on, sexual orientation, age group, and other factors.
+This dataset comes from a survey conducted by the popular website “Stack Overflow,” containing a wide range of data containing information about developers from various countries, their salaries, gender, education, the technology they work on, sexual orientation, age group, and other factors. 
+
 While the dataset contains a large amount of data, I will, however, concentrate on the data related to IT professionals of all age groups working in the United States of America. I will try to put various factors in the data set against the Annual salary to deduce how they might affect the salary.
 
-```{r echo=FALSE}
 ## Loading libraries
+```{r,message=FALSE}
 library(readr)
 library(ggplot2)
 library(dplyr,warn.conflicts = FALSE)
@@ -35,39 +37,37 @@ library(rlang)
 library(tidyr)
 library(tidyverse)
 ```
-
-```{r echo=FALSE}
 ## Loading data
+```{r,eacho=FALSE}
+
 csvdata = read_csv("D:/MSU/CIS663/R-Project/survey.csv")
-```
 
-```{r echo=FALSE}
+```
 ## Loading data into dataframe
-dfdata = data.frame(csvdata)
-```
+```{r,eacho=FALSE}
 
-```{r echo=FALSE}
+dfdata = data.frame(csvdata)
+
+```
 ## Removing columns from dataframe that are not required
+```{r,eacho=FALSE}
 dfdata2 = subset(dfdata, select = -c(AssessJob1,AssessJob2,AssessJob3,AssessJob4,AssessJob5,AssessJob6,AssessJob7,AssessJob8,AssessJob9,AssessJob10,AssessBenefits1,AssessBenefits2,AssessBenefits3,AssessBenefits4,AssessBenefits5,AssessBenefits6,AssessBenefits7,AssessBenefits8,AssessBenefits9,AssessBenefits10,AssessBenefits11,JobContactPriorities1,JobContactPriorities2,JobContactPriorities3,JobContactPriorities4,JobContactPriorities5,JobEmailPriorities1,JobEmailPriorities2,JobEmailPriorities3,JobEmailPriorities4,JobEmailPriorities5,JobEmailPriorities6,JobEmailPriorities7,AdBlocker,AdBlockerDisable,AdBlockerReasons,AdsAgreeDisagree1,AdsAgreeDisagree2,AdsAgreeDisagree3,AdsActions,AdsPriorities1,AdsPriorities2,AdsPriorities3,AdsPriorities4,AdsPriorities5,AdsPriorities6,AdsPriorities7,StackOverflowRecommend,StackOverflowVisit,StackOverflowHasAccount,StackOverflowParticipate,StackOverflowJobs,StackOverflowDevStory,StackOverflowJobsRecommend,StackOverflowConsiderMember,HypotheticalTools1,HypotheticalTools2,HypotheticalTools3,HypotheticalTools4,HypotheticalTools5,Dependents,MilitaryUS,SurveyTooLong,SurveyEasy,ErgonomicDevices,Exercise,WakeTime,SkipMeals,AIDangerous,AIInteresting,AIResponsible,AIFuture,EthicsChoice,EthicsReport,EthicsResponsible,EthicalImplications,HoursOutside,Hobby,OpenSource,UpdateCV,HopeFiveYears,TimeAfterBootcamp,HackathonReasons,AgreeDisagree1,AgreeDisagree2,AgreeDisagree3,LanguageDesireNextYear,DatabaseDesireNextYear,PlatformDesireNextYear,FrameworkDesireNextYear,VersionControl,CheckInCode,Salary,JobSearchStatus,LastNewJob,CurrencySymbol,SelfTaughtTypes) )
 
 ```
-
-```{r echo=FALSE}
 ## Filtering data for united states only 
+```{r,eacho=FALSE}
 dfdata2<-dfdata2[(dfdata$Country=="United States"),]
 ```
-
-```{r echo=FALSE}
 ## Graph showing yearly salary of developers with full time employment
+```{r,eacho=FALSE}
 dfdata2 %>% filter(Employment %in% 'Employed full-time') %>% ggplot() +
   geom_histogram(aes(ConvertedSalary),fill = "#008080")  +
   labs(x = "Yearly Salary", 
        y = "Frequency",
        title = "Annual salary")
 ```
-
-```{r echo=FALSE}
 ## Violin plot of salary against age group
+```{r,split=FALSE, fig.align = 'default', warning = FALSE, out.width="100%"}
 dfdata2 %>% filter(Employment %in% 'Employed full-time') %>% 
   group_by(Age) %>% 
   mutate(n = n()) %>% 
@@ -89,9 +89,8 @@ dfdata2 %>% filter(Employment %in% 'Employed full-time') %>%
        y = "Log of Annual Salary in USD",
        title = "Annual Salary in USD - ")
 ```
-
-```{r echo=FALSE}
 ## Annual salary plotted wrt Age in male and females
+```{r,eacho=FALSE}
 dfdata2 %>% filter(Employment %in% 'Employed full-time') %>% 
   filter(Gender %in% c('Male','Female')) %>% 
   group_by(Age) %>% 
@@ -116,9 +115,8 @@ dfdata2 %>% filter(Employment %in% 'Employed full-time') %>%
        y = "Log of Annual Salary in USD",
        title = "Annual Salary in USD - Male vs Female - by Age") 
 ```
-
-```{r echo=FALSE}
 ## Annual salary of developers wrt sexual orientation in males and females
+```{r,eacho=FALSE}
 dfdata2 %>% filter(Employment %in% 'Employed full-time') %>% 
   filter(Gender %in% c('Male','Female')) %>% 
   group_by(SexualOrientation) %>% 
@@ -143,9 +141,8 @@ dfdata2 %>% filter(Employment %in% 'Employed full-time') %>%
        y = "Log of Annual Salary in USD",
        title = "Annual Salary in USD - Male vs Female - by SexualOrientation")
 ```
-
-```{r echo=FALSE}
 ## Differnce in salaries of developers wrt thier parents education level
+```{r,eacho=FALSE}
 dfdata2 %>% filter(Employment %in% 'Employed full-time') %>% 
   group_by(EducationParents) %>% 
   mutate(n = n()) %>% 
@@ -159,9 +156,8 @@ dfdata2 %>% filter(Employment %in% 'Employed full-time') %>%
        y = 'Median difference in salaries',
        title = 'Difference in salaries according to parents education') 
 ```
-
-```{r echo=FALSE}
 ## Median Salary of a Developer according to Age group
+```{r,eacho=FALSE}
 dfdata2 %>% filter(Employment %in% 'Employed full-time') %>% 
   filter(!is.na(Age)) %>%
   select(Age,ConvertedSalary,Gender) %>%
@@ -177,9 +173,8 @@ dfdata2 %>% filter(Employment %in% 'Employed full-time') %>%
   hc_colors(c("#829c02", "9c0228")) %>%  
   hc_title(text = "Median Salary according to Age group of Developer")
 ```
-
-```{r echo=FALSE}
 ## Median Salary of Developer according to Gender
+```{r,eacho=FALSE}
 dfdata %>% filter(Employment %in% 'Employed full-time') %>% 
   filter(!is.na(DevType)) %>%
   filter(!is.na(Gender), Gender %in% c('Male','Female')) %>% 
@@ -196,9 +191,8 @@ dfdata %>% filter(Employment %in% 'Employed full-time') %>%
   hc_colors(c("#7afd30", "#fe4e0d")) %>%  
   hc_title(text = "Median Salary of Developer according to Gender")
 ```
-
-```{r echo=FALSE}
 ## Male vs Female by Age groups in IT industry
+```{r,eacho=FALSE}
 dfdata2 %>% 
   filter(!is.na(Gender)) %>%
   filter(!is.na(Age)) %>% 
@@ -215,9 +209,8 @@ dfdata2 %>%
   hc_title(text = 'Male vs Female by Age groups in IT industry') %>% 
   hc_yAxis(type = 'logarithmic')
 ```
-
-```{r echo=FALSE}
 ## Median Salary of Developer according to Gender and Undergrad Major
+```{r,eacho=FALSE}
 dfdata2 %>% filter(Employment %in% 'Employed full-time') %>% 
   filter(!is.na(UndergradMajor)) %>%
   filter(!is.na(UndergradMajor), Gender %in% c('Male','Female')) %>% 
@@ -234,9 +227,8 @@ dfdata2 %>% filter(Employment %in% 'Employed full-time') %>%
   hc_colors(c("#7afd30", "#fe4e0d")) %>%  
   hc_title(text = "Median Salary of Developer according to Gender and Undergrad Major")
 ```
-
-```{r echo=FALSE}
 ## Median Salary of Developer according to Gender and Formal Education 
+```{r,eacho=FALSE}
 dfdata2 %>% filter(Employment %in% 'Employed full-time') %>% 
   filter(!is.na(FormalEducation)) %>%
   filter(!is.na(FormalEducation), Gender %in% c('Male','Female')) %>% 
@@ -253,9 +245,8 @@ dfdata2 %>% filter(Employment %in% 'Employed full-time') %>%
   hc_colors(c("#7afd30", "#fe4e0d")) %>%  
   hc_title(text = "Median Salary of Developer according to Gender and Formal Education")
 ```
-
-```{r echo=FALSE}
 ## Median Salary of Developer according to Gender and Sexual Orientation
+```{r,eacho=FALSE}
 dfdata2 %>% filter(Employment %in% 'Employed full-time') %>% 
   filter(!is.na(SexualOrientation)) %>%
   filter(!is.na(SexualOrientation), Gender %in% c('Male','Female')) %>% 
@@ -272,6 +263,5 @@ dfdata2 %>% filter(Employment %in% 'Employed full-time') %>%
   hc_colors(c("#7afd30", "#fe4e0d")) %>%  
   hc_title(text = "Median Salary of Developer according to Gender and Sexual Orientation")
 ```
-
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
