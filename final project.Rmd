@@ -15,7 +15,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```
 
-## Introduction
+## Introduction 
 
 The World Health Organization defines ageism as “the stereotyping, prejudice, and discrimination against people based on their age.” Employers across various industries tend to show a negative attitude towards older workers, seeing them as less healthy, less skillful, and less productive than their younger counterparts. The problem of ageism has significantly affected the Tech industry, as the young and gifted developers and programmers, which led the way during the tech boom in the 1990s, now find themselves on the wrong side of age and falling prey to the problem of ageism. Although no significant research or studies conducted on the ageism problem in the tech industry and how it affects the salaries of the affected professionals. An analysis of data on this problem can shed some light on the factors that might affect it and provide some outlook on how different factors such as age, gender, sexual orientation, and several other factors affect the salaries of an IT professional.
 
