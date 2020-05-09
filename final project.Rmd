@@ -26,39 +26,52 @@ This dataset comes from a survey conducted by the popular website “Stack Overf
 While the dataset contains a large amount of data, I will, however, concentrate on the data related to IT professionals of all age groups working in the United States of America. I will try to put various factors in the data set against the Annual salary to deduce how they might affect the salary.
 
 ## Loading libraries
+Before starting work on the data, required libraries must be added to propery load, cleanse and execute the data. 
 ```{r,message=FALSE}
-library(readr)
-library(ggplot2)
-library(dplyr,warn.conflicts = FALSE)
-library(highcharter)
-library(knitr)
-library(rmarkdown)
-library(rlang)
-library(tidyr)
-library(tidyverse)
+library(readr) # It provides a fast and friendly way to read rectangular data like csv, tsv, and fwf.
+library(ggplot2) # It is used to declaratively creating graphics, based on The Grammar of Graphics.
+library(dplyr,warn.conflicts = FALSE) # It is a grammar of data manipulation.
+library(highcharter) #create various charts with the same style like scatter, bubble, etc.
+library(knitr) # It an engine for dynamic report generation with R.
+library(rmarkdown) # It is a file format for making dynamic documents with R.
+library(rlang) # It provides tools to work with core language features of R and the tidyverse
+library(tidyr) # It helps in creating tidy data.
+library(tidyverse) # It is an opinionated collection of R packages designed for data science.
 ```
-## Loading data
+## Loading Data into R studio
+After loading the required libraries, the data set is loaded into Rstudio via read_csv command. The data set contains the survey data from popular site stack developers of IT professionals of different age groups, working on various different technologies. The data also contains the salary of each individual that took the survey. The survey contains data from professionals from all over the world.
+
 ```{r,eacho=FALSE}
 
 csvdata = read_csv("D:/MSU/CIS663/R-Project/survey.csv")
 
 ```
-## Loading data into dataframe
+## Loading Data into DataFrame
+After the data has been Loaded into Rstudio, it can now be converted into a data frame to use further operations in order to manipulate and cleanse the data, so it can be used further and represented graphically.
+
 ```{r,eacho=FALSE}
 
 dfdata = data.frame(csvdata)
 
 ```
-## Removing columns from dataframe that are not required
+## Removing columns from Dataframe that are not required
+As the data has been converted into a data frame, further, we can drop columns from the data that are not required for the prediction and visualization of the objective.
+
 ```{r,eacho=FALSE}
 dfdata2 = subset(dfdata, select = -c(AssessJob1,AssessJob2,AssessJob3,AssessJob4,AssessJob5,AssessJob6,AssessJob7,AssessJob8,AssessJob9,AssessJob10,AssessBenefits1,AssessBenefits2,AssessBenefits3,AssessBenefits4,AssessBenefits5,AssessBenefits6,AssessBenefits7,AssessBenefits8,AssessBenefits9,AssessBenefits10,AssessBenefits11,JobContactPriorities1,JobContactPriorities2,JobContactPriorities3,JobContactPriorities4,JobContactPriorities5,JobEmailPriorities1,JobEmailPriorities2,JobEmailPriorities3,JobEmailPriorities4,JobEmailPriorities5,JobEmailPriorities6,JobEmailPriorities7,AdBlocker,AdBlockerDisable,AdBlockerReasons,AdsAgreeDisagree1,AdsAgreeDisagree2,AdsAgreeDisagree3,AdsActions,AdsPriorities1,AdsPriorities2,AdsPriorities3,AdsPriorities4,AdsPriorities5,AdsPriorities6,AdsPriorities7,StackOverflowRecommend,StackOverflowVisit,StackOverflowHasAccount,StackOverflowParticipate,StackOverflowJobs,StackOverflowDevStory,StackOverflowJobsRecommend,StackOverflowConsiderMember,HypotheticalTools1,HypotheticalTools2,HypotheticalTools3,HypotheticalTools4,HypotheticalTools5,Dependents,MilitaryUS,SurveyTooLong,SurveyEasy,ErgonomicDevices,Exercise,WakeTime,SkipMeals,AIDangerous,AIInteresting,AIResponsible,AIFuture,EthicsChoice,EthicsReport,EthicsResponsible,EthicalImplications,HoursOutside,Hobby,OpenSource,UpdateCV,HopeFiveYears,TimeAfterBootcamp,HackathonReasons,AgreeDisagree1,AgreeDisagree2,AgreeDisagree3,LanguageDesireNextYear,DatabaseDesireNextYear,PlatformDesireNextYear,FrameworkDesireNextYear,VersionControl,CheckInCode,Salary,JobSearchStatus,LastNewJob,CurrencySymbol,SelfTaughtTypes) )
-
 ```
-## Filtering data for united states only 
+## Filtering data for United States Only 
+After unnecessary columns have been dropped from the data frame, the data can be further filtered according to the country of origin. Survey Takers from the only United States Of America are taken into account, and other countries are to be filtered out.
+
 ```{r,eacho=FALSE}
 dfdata2<-dfdata2[(dfdata$Country=="United States"),]
 ```
-## Graph showing yearly salary of developers with full time employment
+## Visualisation of Data
+As the data has been cleaned and filtered, it can now be used to visualize various aspects related to IT developers such as Age, Gender, Education, Salary, etc.
+
+## Graph showing yearly salary of developers with Full-Time Employment
+Through this histogram, we try to visualize the salary range and frequency of the salary amount that occurs within the data. As we can see in the graph, the maximum frequency of data is within USD 0 to USD 500,000, even though the data is a bit spread apart, as the data ranges from  USD 0 to USD 2,000,000.
+
 ```{r,eacho=FALSE}
 dfdata2 %>% filter(Employment %in% 'Employed full-time') %>% ggplot() +
   geom_histogram(aes(ConvertedSalary),fill = "#008080")  +
@@ -66,7 +79,10 @@ dfdata2 %>% filter(Employment %in% 'Employed full-time') %>% ggplot() +
        y = "Frequency",
        title = "Annual salary")
 ```
-## Violin plot of salary against Age Group
+
+## Violin Plot of Salary with respect to Age Group
+Through this Violin plot, we try to visualize the salary with respect to the various age groups of the survey takers. The age group of 55 to 64 year old tends to have a higher probability of having a median salary of around USD 500,000. The age groups of 18 to 24 and 25 to 34 tend to be close to USD 80,000 to USD 100,000.
+
 ```{r,split=FALSE, fig.align = 'default', warning = FALSE, out.width="100%"}
 dfdata2 %>% filter(Employment %in% 'Employed full-time') %>% 
   group_by(Age) %>% 
@@ -89,7 +105,10 @@ dfdata2 %>% filter(Employment %in% 'Employed full-time') %>%
        y = "Log of Annual Salary in USD",
        title = "Annual Salary in USD - ")
 ```
-## Annual salary plotted wrt Age in male and females
+
+## Box-plot plotting Annual Salary with respect to Age in Males and Females
+Through this Box-plot, we try to visualize the Annual Salary with respect to age in male and female developers in the IT industry. According to the data provided across all age ranges, males tend to have higher salaries the women; also, the number of males working in the IT industry far outweigh the number of females.  
+
 ```{r,eacho=FALSE}
 dfdata2 %>% filter(Employment %in% 'Employed full-time') %>% 
   filter(Gender %in% c('Male','Female')) %>% 
@@ -112,10 +131,13 @@ dfdata2 %>% filter(Employment %in% 'Employed full-time') %>%
   #facet_grid('Gender') +
   scale_y_log10() + 
   labs(x = "Age", 
-       y = "Log of Annual Salary in USD",
+       y = "Annual Salary in USD",
        title = "Annual Salary in USD - Male vs Female - by Age") 
 ```
-## Annual salary of developers wrt sexual orientation in males and females
+
+## Box-plot plotting Annual Salary with respect to sexual orientation in males and females
+Through this Box-plot, we try to visualize the Annual Salary with respect to sexual orientation in male and female developers in the IT industry. According to the data provided across all age ranges, the data is highly concentrated near the straight or heterosexual line, a significant number of survey takers tend to fall in this category. However, when we look at data for bisexual or queer, the number of females tends to outnumber the number of males in the IT industry, also earning more than males compared to any other type of sexual orientation.
+
 ```{r,eacho=FALSE}
 dfdata2 %>% filter(Employment %in% 'Employed full-time') %>% 
   filter(Gender %in% c('Male','Female')) %>% 
@@ -141,7 +163,10 @@ dfdata2 %>% filter(Employment %in% 'Employed full-time') %>%
        y = "Log of Annual Salary in USD",
        title = "Annual Salary in USD - Male vs Female - by SexualOrientation")
 ```
-## Differnce in salaries of developers wrt thier parents education level
+
+## Differnce in salaries of developers with respect to thier parents education level
+Through this graph, we try to deduce if there is any relationship between how much a developer might earn with respect to the education level of their parents. This graph shows that developers tend to have higher salaries if their parents have some professional degree or have a doctorate. While on the other hand, developers tend to have lower salaries if their parents own an associate degree, have some college degree, or have no formal education.
+
 ```{r,eacho=FALSE}
 dfdata2 %>% filter(Employment %in% 'Employed full-time') %>% 
   group_by(EducationParents) %>% 
@@ -156,7 +181,10 @@ dfdata2 %>% filter(Employment %in% 'Employed full-time') %>%
        y = 'Median difference in salaries',
        title = 'Difference in salaries according to parents education') 
 ```
+
 ## Median Salary of a Developer according to Age group
+Through this histogram, we plot the median salaries of developers across different age groups. When the histogram is analyzed, we notice that the age group of 45-54-year-old ager group tends to earn a median salary of 125k USD; also the age group of 55 - 64 years old falls in the same median salary group. However, developers above the age of 65 tend to have lower median salaries than people aged between 45 - 64 years old. Young people between the age group of 18 - 43 tend to earn the lowest salaries.
+
 ```{r,eacho=FALSE}
 dfdata2 %>% filter(Employment %in% 'Employed full-time') %>% 
   filter(!is.na(Age)) %>%
@@ -173,7 +201,10 @@ dfdata2 %>% filter(Employment %in% 'Employed full-time') %>%
   hc_colors(c("#829c02", "9c0228")) %>%  
   hc_title(text = "Median Salary according to Age group of Developer")
 ```
-## Median Salary of Developer according to Gender
+
+## Median Salary various types of Developer according to Gender
+Through this chart, we plot the median salaries across various types of developers in males and females. Both males and females working as an engineering manager tend to earn the highest median salaries across all types of developing job roles. In most job roles, males tend to earn significantly more than females working in the same job roles. However, in the roles of C-Suite executives and DevOps specialists, female salaries tend to outweigh the salaries of their male counterparts. Also, to be noted that some job roles such as embedded applications, enterprise application developers, backend developer, and test developers have negligible females working.
+
 ```{r,eacho=FALSE}
 dfdata %>% filter(Employment %in% 'Employed full-time') %>% 
   filter(!is.na(DevType)) %>%
@@ -191,7 +222,10 @@ dfdata %>% filter(Employment %in% 'Employed full-time') %>%
   hc_colors(c("#7afd30", "#fe4e0d")) %>%  
   hc_title(text = "Median Salary of Developer according to Gender")
 ```
+
 ## Male vs Female by Age groups in IT industry
+Through this chart, we plot the number of males and females developers across various age groups that are working in the IT industry. In males, the highest concentration of males working in the IT industry is of the age group 25-34-year-old, with the second-highest being in the age group of 35 - 44 years old, the lowest number of males tend to fall in the age group of 65 years and older. For female developers like males, the highest age group is 25 - 34 years old; however, the number of females in the age groups of 18 - 24 years old and 35 - 44 years old is approximately the same without much difference. Also, in females, the lowest number of developers working is in the age group of 65 years and older.
+
 ```{r,eacho=FALSE}
 dfdata2 %>% 
   filter(!is.na(Gender)) %>%
@@ -209,7 +243,10 @@ dfdata2 %>%
   hc_title(text = 'Male vs Female by Age groups in IT industry') %>% 
   hc_yAxis(type = 'logarithmic')
 ```
+
 ## Median Salary of Developer according to Gender and Undergrad Major
+Through this chart, we plot the median salaries of developers in males and females according to their undergrad major. The highest median salaries for males tend to be for developers with the undergrad majors in an engineering discipline and natural science; however, females with the same undergrad majors tend to earn significantly lower than their male counterparts. For females, with engineering disciple and computer science, undergrad majors tend to earn the highest median salaries. Developers with undergrad majors in fine arts, health science, and web development contain an almost negligible amount of females, and even the males with these undergrad majors tend to have some of the lowest median salaries.
+
 ```{r,eacho=FALSE}
 dfdata2 %>% filter(Employment %in% 'Employed full-time') %>% 
   filter(!is.na(UndergradMajor)) %>%
@@ -227,7 +264,10 @@ dfdata2 %>% filter(Employment %in% 'Employed full-time') %>%
   hc_colors(c("#7afd30", "#fe4e0d")) %>%  
   hc_title(text = "Median Salary of Developer according to Gender and Undergrad Major")
 ```
-## Median Salary of Developer according to Gender and Formal Education 
+
+## Median Salary of Developer according to Formal Education in Males and Females
+Through this chart, we plot the median salaries of developers in males and females according to the formal education they have acquired. For males, the developers with a doctorate tend to earn the highest of median salaries, with developers with a master's degree earning the second-highest median salaries. Male developers with an associate degree tend to earn the lowest salaries across all types of formal education. In female developers, doctoral and professional degree holders tend to earn the highest of median salaries across all types of formal educations. Also, same as the males, the females with an associate degree tend to earn the lowest of median salaries across all formal education types.
+
 ```{r,eacho=FALSE}
 dfdata2 %>% filter(Employment %in% 'Employed full-time') %>% 
   filter(!is.na(FormalEducation)) %>%
@@ -245,23 +285,26 @@ dfdata2 %>% filter(Employment %in% 'Employed full-time') %>%
   hc_colors(c("#7afd30", "#fe4e0d")) %>%  
   hc_title(text = "Median Salary of Developer according to Gender and Formal Education")
 ```
-## Median Salary of Developer according to Gender and Sexual Orientation
+
+## Median Salary of Developers according Hours on Computer in Males and Females
+Through this chart, we plot the median salaries of developers in males and females according to the number of hours they spend on their computers. Male developers spending about 5 to 12 hours on their computers tend to earn the highest median salaries, and male developers spending about 1 to 4 hours on the computer tend to earn the lowest salaries. In the case of female developers, the developers spending about 5 to 8 hours tend to earn the maximum salaries, even more than female developers spending about 9 to 12 hours on the computer. However, in terms of the amount of time spent on a computer, females tend to earn significantly lower than their male counterparts.
+
 ```{r,eacho=FALSE}
 dfdata2 %>% filter(Employment %in% 'Employed full-time') %>% 
-  filter(!is.na(SexualOrientation)) %>%
-  filter(!is.na(SexualOrientation), Gender %in% c('Male','Female')) %>% 
-  select(SexualOrientation,ConvertedSalary,Gender) %>%
-  mutate(SexualOrientation = str_split(SexualOrientation, pattern = ";")) %>%
-  unnest(SexualOrientation) %>%
-  group_by(SexualOrientation,Gender) %>%
+  filter(!is.na(HoursComputer)) %>%
+  filter(!is.na(HoursComputer), Gender %in% c('Male','Female')) %>% 
+  select(HoursComputer,ConvertedSalary,Gender) %>%
+  mutate(HoursComputer = str_split(HoursComputer, pattern = ";")) %>%
+  unnest(HoursComputer) %>%
+  group_by(HoursComputer,Gender) %>%
   summarise(Median_Salary = median(ConvertedSalary,na.rm = TRUE)) %>%
   arrange(desc(Median_Salary)) %>%
   ungroup() %>%
-  mutate(SexualOrientation = reorder(SexualOrientation,Median_Salary)) %>%
+  mutate(HoursComputer = reorder(HoursComputer,Median_Salary)) %>%
   head(20) %>% 
-  hchart('column',hcaes('SexualOrientation','Median_Salary', group = 'Gender')) %>% 
+  hchart('column',hcaes('HoursComputer','Median_Salary', group = 'Gender')) %>% 
   hc_colors(c("#7afd30", "#fe4e0d")) %>%  
-  hc_title(text = "Median Salary of Developer according to Gender and Sexual Orientation")
+  hc_title(text = "Median Salary of Developer according to Hours spent on Computer")
 ```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
