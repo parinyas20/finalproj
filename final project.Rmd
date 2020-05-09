@@ -66,7 +66,7 @@ dfdata2 %>% filter(Employment %in% 'Employed full-time') %>% ggplot() +
        y = "Frequency",
        title = "Annual salary")
 ```
-## Violin plot of salary against age group
+## Violin plot of salary against Age Group
 ```{r,split=FALSE, fig.align = 'default', warning = FALSE, out.width="100%"}
 dfdata2 %>% filter(Employment %in% 'Employed full-time') %>% 
   group_by(Age) %>% 
