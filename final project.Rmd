@@ -3,10 +3,10 @@ title: "Final R Project"
 author: "Parinyas Singh"
 date: "3/3/2020"
 output:
-  word_document: 
-  pdf_document: 
   html_document: 
     df_print: paged
+  pdf_document: 
+  word_document: 
 always_allow_html: true
 ---
 
@@ -43,7 +43,7 @@ After loading the required libraries, the data set is loaded into Rstudio via re
 
 ```{r,eacho=FALSE}
 
-csvdata = read_csv("D:/MSU/CIS663/R-Project/survey.csv")
+csvdata = read_csv("D:/R Project/survey.csv")
 
 ```
 ## Loading Data into DataFrame
